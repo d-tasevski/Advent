@@ -9,15 +9,27 @@ import EventForm from '../EventForm/EventForm';
 export class EventDashboard extends Component {
 	static propTypes = {};
 
+	state = {
+		events,
+		isOpen: false,
+	};
+
+	handleFormVisibility = () => this.setState({ isOpen: !this.state.isOpen });
+
 	render() {
+		const { events, isOpen } = this.state;
 		return (
 			<Grid>
 				<Grid.Column width={10}>
 					<EventList events={events} />
 				</Grid.Column>
 				<Grid.Column width={6}>
-					<Button content="Create Event" positive />
-					<EventForm />
+					<Button
+						content={isOpen ? 'Cancel' : 'Create Event'}
+						positive={!isOpen}
+						onClick={this.handleFormVisibility}
+					/>
+					{isOpen && <EventForm />}
 				</Grid.Column>
 			</Grid>
 		);

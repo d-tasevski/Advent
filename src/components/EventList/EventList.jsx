@@ -3,24 +3,19 @@ import PropTypes from 'prop-types';
 
 import EventListItem from './EventListItem';
 
-export class EventList extends Component {
-	static propTypes = {
-		events: PropTypes.arrayOf(PropTypes.shape({})),
-	};
-	static defaultProps = {
-		events: [],
-	};
+const EventList = ({ events }) => (
+	<div>
+		{events.map(e => (
+			<EventListItem event={e} key={e.id} />
+		))}
+	</div>
+);
 
-	render() {
-		const { events } = this.props;
-		return (
-			<div>
-				{events.map(e => (
-					<EventListItem event={e} key={e.id} />
-				))}
-			</div>
-		);
-	}
-}
+EventList.propTypes = {
+	events: PropTypes.arrayOf(PropTypes.shape({})),
+};
+EventList.defaultProps = {
+	events: [],
+};
 
 export default EventList;

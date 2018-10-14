@@ -29,10 +29,9 @@ export class EventForm extends Component {
 						<label>Hosted By</label>
 						<input placeholder="Enter the name of person hosting" />
 					</Form.Field>
-					<Button positive type="submit">
+					<Button positive fluid type="submit">
 						Submit
 					</Button>
-					<Button type="button">Cancel</Button>
 				</Form>
 			</Segment>
 		);
