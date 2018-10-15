@@ -13,9 +13,10 @@ export class EventDashboard extends Component {
 	state = {
 		events,
 		isOpen: false,
+		selectedEvent: null,
 	};
 
-	handleFormVisibility = () => this.setState({ isOpen: !this.state.isOpen });
+	handleFormVisibility = () => this.setState({ isOpen: !this.state.isOpen, selectedEvent: null });
 
 	handleCreateEvent = event => {
 		event.id = cuid();
@@ -24,12 +25,28 @@ export class EventDashboard extends Component {
 		return this.setState({ events: [...this.state.events, event], isOpen: false });
 	};
 
+	handleSelectEvent = event => this.setState({ selectedEvent: event, isOpen: true });
+
+	handleUpdateEvent = event => {
+		const newEvents = this.state.events.map(e => (e.id === event.id ? event : e));
+		return this.setState({ events: newEvents, isOpen: false, selectedEvent: null });
+	};
+
+	handleDeleteEvent = eventID => {
+		const newEvents = this.state.events.filter(e => e.id !== eventID);
+		return this.setState({ events: newEvents, isOpen: false, selectedEvent: null });
+	};
+
 	render() {
-		const { events, isOpen } = this.state;
+		const { events, isOpen, selectedEvent } = this.state;
 		return (
 			<Grid>
 				<Grid.Column width={10}>
-					<EventList events={events} />
+					<EventList
+						deleteEvent={this.handleDeleteEvent}
+						selectEvent={this.handleSelectEvent}
+						events={events}
+					/>
 				</Grid.Column>
 				<Grid.Column width={6}>
 					<Button
@@ -37,7 +54,13 @@ export class EventDashboard extends Component {
 						positive={!isOpen}
 						onClick={this.handleFormVisibility}
 					/>
-					{isOpen && <EventForm createEvent={this.handleCreateEvent} />}
+					{isOpen && (
+						<EventForm
+							selectedEvent={selectedEvent}
+							updateEvent={this.handleUpdateEvent}
+							createEvent={this.handleCreateEvent}
+						/>
+					)}
 				</Grid.Column>
 			</Grid>
 		);
