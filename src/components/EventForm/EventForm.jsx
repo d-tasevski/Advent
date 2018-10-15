@@ -27,16 +27,17 @@ export class EventForm extends Component {
 		isUpdate: false,
 	};
 
-	static getDerivedStateFromProps(nextProps, prevState) {
-		if (
-			!prevState.isUpdate &&
-			nextProps.selectedEvent &&
-			Object.keys(nextProps.selectedEvent).length &&
-			nextProps.selectedEvent !== prevState.event.id
-		) {
-			return { event: nextProps.selectedEvent, isUpdate: true };
-		} else return null;
+	componentDidMount() {
+		if (Object.keys(this.props.selectedEvent).length) {
+			this.setState({ event: this.props.selectedEvent, isUpdate: true });
+		}
 	}
+
+	componentWillReceiveProps = nextProps => {
+		if (nextProps.selectedEvent !== this.props.selectedEvent) {
+			this.setState({ event: nextProps.selectedEvent, isUpdate: true });
+		}
+	};
 
 	onChange = e => {
 		const { name, value } = e.target;
