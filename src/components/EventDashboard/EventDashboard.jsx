@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import cuid from 'cuid';
 import { Grid, Button } from 'semantic-ui-react';
 
 import { events } from '../../fixtures';
@@ -16,6 +17,13 @@ export class EventDashboard extends Component {
 
 	handleFormVisibility = () => this.setState({ isOpen: !this.state.isOpen });
 
+	handleCreateEvent = event => {
+		event.id = cuid();
+		event.hostPhotoURL = '/assets/user.png';
+		event.attendees = [];
+		return this.setState({ events: [...this.state.events, event], isOpen: false });
+	};
+
 	render() {
 		const { events, isOpen } = this.state;
 		return (
@@ -29,7 +37,7 @@ export class EventDashboard extends Component {
 						positive={!isOpen}
 						onClick={this.handleFormVisibility}
 					/>
-					{isOpen && <EventForm />}
+					{isOpen && <EventForm createEvent={this.handleCreateEvent} />}
 				</Grid.Column>
 			</Grid>
 		);
