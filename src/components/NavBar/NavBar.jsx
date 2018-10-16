@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { NavLink, Link } from 'react-router-dom';
+
 import { Menu, Container, Button } from 'semantic-ui-react';
 
 export class NavBar extends Component {
@@ -9,13 +11,21 @@ export class NavBar extends Component {
 		return (
 			<Menu inverted>
 				<Container>
-					<Menu.Item header>
+					<Menu.Item as={Link} to="/" header>
 						<img src="assets/logo.png" alt="logo" className="h-mr-sm" />
 						<h1>Advent</h1>
 					</Menu.Item>
-					<Menu.Item name="Events" />
+					<Menu.Item as={NavLink} to="/events" name="Events" />
+					<Menu.Item as={NavLink} to="/people" name="People" />
 					<Menu.Item>
-						<Button floated="right" positive inverted content="Create Event" />
+						<Button
+							as={Link}
+							to="/create-event"
+							floated="right"
+							positive
+							inverted
+							content="Create Event"
+						/>
 					</Menu.Item>
 					<Menu.Item position="right">
 						<Button basic inverted content="Login" />
