@@ -1,13 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+
 import 'semantic-ui-css/semantic.min.css';
 import './index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 
 const rootEl = document.getElementById('root');
+const Root = () => (
+	<BrowserRouter>
+		<App />
+	</BrowserRouter>
+);
+
 const render = () => {
-	ReactDOM.render(<App />, rootEl);
+	ReactDOM.render(<Root />, rootEl);
 };
 
 // Enable hot reloading

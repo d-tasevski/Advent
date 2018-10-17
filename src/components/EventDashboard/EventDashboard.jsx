@@ -13,10 +13,10 @@ export class EventDashboard extends Component {
 	state = {
 		events,
 		isOpen: false,
-		selectedEvent: null,
+		selectedEvent: {},
 	};
 
-	handleFormVisibility = () => this.setState({ isOpen: !this.state.isOpen, selectedEvent: null });
+	handleFormVisibility = () => this.setState({ isOpen: !this.state.isOpen, selectedEvent: {} });
 
 	handleCreateEvent = event => {
 		event.id = cuid();
@@ -29,12 +29,12 @@ export class EventDashboard extends Component {
 
 	handleUpdateEvent = event => {
 		const newEvents = this.state.events.map(e => (e.id === event.id ? event : e));
-		return this.setState({ events: newEvents, isOpen: false, selectedEvent: null });
+		return this.setState({ events: newEvents, isOpen: false, selectedEvent: {} });
 	};
 
 	handleDeleteEvent = eventID => {
 		const newEvents = this.state.events.filter(e => e.id !== eventID);
-		return this.setState({ events: newEvents, isOpen: false, selectedEvent: null });
+		return this.setState({ events: newEvents, isOpen: false, selectedEvent: {} });
 	};
 
 	render() {
