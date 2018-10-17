@@ -9,13 +9,16 @@ import './index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import configureStore from './store/store';
+import ScrollToTop from './helpers/ScrollToTop';
 
 const store = configureStore();
 const rootEl = document.getElementById('root');
 const Root = () => (
 	<Provider store={store}>
 		<BrowserRouter>
-			<App />
+			<ScrollToTop>
+				<App />
+			</ScrollToTop>
 		</BrowserRouter>
 	</Provider>
 );
