@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Segment, Item, Icon, List, Button } from 'semantic-ui-react';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 import EventListAttendee from './EventListAttendee';
 
-const EventListItem = ({ event, selectEvent, deleteEvent }) => {
+const EventListItem = ({ event, selectEvent, deleteEvent, history }) => {
 	const onSelect = () => selectEvent(event);
 	const onDelete = () => deleteEvent(event.id);
-	console.log(event);
+	const goToDetailPage = () => history.push(`/event/${event.id}`);
 
 	return (
 		<Segment.Group>
@@ -42,8 +43,8 @@ const EventListItem = ({ event, selectEvent, deleteEvent }) => {
 				<p>{event.description}</p>
 				<Button
 					size="tiny"
-					onClick={onSelect}
-					as="a"
+					as={Link}
+					to={`/event/${event.id}`}
 					color="teal"
 					floated="right"
 					content="View"

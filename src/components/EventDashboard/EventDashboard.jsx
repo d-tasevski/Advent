@@ -18,6 +18,10 @@ export class EventDashboard extends Component {
 
 	handleFormVisibility = () => this.setState({ isOpen: !this.state.isOpen, selectedEvent: {} });
 
+	handleSelectEvent = event => this.setState({ selectedEvent: event, isOpen: true });
+
+	handleDeleteEvent = eventID => this.props.deleteEvent(eventID);
+
 	handleCreateEvent = event => {
 		event.id = cuid();
 		event.hostPhotoURL = '/assets/user.png';
@@ -26,19 +30,14 @@ export class EventDashboard extends Component {
 		return this.setState({ isOpen: false });
 	};
 
-	handleSelectEvent = event => this.setState({ selectedEvent: event, isOpen: true });
-
 	handleUpdateEvent = event => {
 		this.props.updateEvent(event);
 		return this.setState({ isOpen: false, selectedEvent: {} });
 	};
 
-	handleDeleteEvent = eventID => this.props.deleteEvent(eventID);
-
 	render() {
 		const { isOpen, selectedEvent } = this.state;
 		const { events } = this.props;
-		console.log(this.props);
 
 		return (
 			<Grid>
