@@ -1,4 +1,12 @@
-export const events = [
+import KeyMirror from 'keymirror';
+
+export const types = KeyMirror({
+	CREATE_EVENT: null,
+	UPDATE_EVENT: null,
+	DELETE_EVENT: null,
+});
+
+export const initialState = [
 	{
 		id: '1',
 		title: 'Trip to Tower of London',

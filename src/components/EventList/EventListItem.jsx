@@ -8,6 +8,7 @@ import EventListAttendee from './EventListAttendee';
 const EventListItem = ({ event, selectEvent, deleteEvent }) => {
 	const onSelect = () => selectEvent(event);
 	const onDelete = () => deleteEvent(event.id);
+	console.log(event);
 
 	return (
 		<Segment.Group>

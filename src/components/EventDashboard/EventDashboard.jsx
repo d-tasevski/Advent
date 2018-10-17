@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import cuid from 'cuid';
 import { Grid, Button } from 'semantic-ui-react';
 
-import { events } from '../../fixtures';
+import { createEvent, updateEvent, deleteEvent } from '../../actions/events';
 import EventList from '../EventList/EventList';
 import EventForm from '../EventForm/EventForm';
 
@@ -11,7 +12,6 @@ export class EventDashboard extends Component {
 	static propTypes = {};
 
 	state = {
-		events,
 		isOpen: false,
 		selectedEvent: {},
 	};
@@ -22,23 +22,24 @@ export class EventDashboard extends Component {
 		event.id = cuid();
 		event.hostPhotoURL = '/assets/user.png';
 		event.attendees = [];
-		return this.setState({ events: [...this.state.events, event], isOpen: false });
+		this.props.createEvent(event);
+		return this.setState({ isOpen: false });
 	};
 
 	handleSelectEvent = event => this.setState({ selectedEvent: event, isOpen: true });
 
 	handleUpdateEvent = event => {
-		const newEvents = this.state.events.map(e => (e.id === event.id ? event : e));
-		return this.setState({ events: newEvents, isOpen: false, selectedEvent: {} });
+		this.props.updateEvent(event);
+		return this.setState({ isOpen: false, selectedEvent: {} });
 	};
 
-	handleDeleteEvent = eventID => {
-		const newEvents = this.state.events.filter(e => e.id !== eventID);
-		return this.setState({ events: newEvents, isOpen: false, selectedEvent: {} });
-	};
+	handleDeleteEvent = eventID => this.props.deleteEvent(eventID);
 
 	render() {
-		const { events, isOpen, selectedEvent } = this.state;
+		const { isOpen, selectedEvent } = this.state;
+		const { events } = this.props;
+		console.log(this.props);
+
 		return (
 			<Grid>
 				<Grid.Column width={10}>
@@ -67,4 +68,11 @@ export class EventDashboard extends Component {
 	}
 }
 
-export default EventDashboard;
+const mapStateToProps = ({ events }) => ({
+	events,
+});
+
+export default connect(
+	mapStateToProps,
+	{ createEvent, updateEvent, deleteEvent }
+)(EventDashboard);
