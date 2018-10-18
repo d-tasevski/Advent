@@ -12,6 +12,7 @@ import { createEvent, updateEvent } from '../../actions/events';
 import TextInput from '../common/TextInput';
 import TextArea from '../common/TextArea';
 import SelectInput from '../common/SelectInput';
+import DateInput from '../common/DateInput';
 
 export class EventForm extends Component {
 	static propTypes = {
@@ -40,6 +41,8 @@ export class EventForm extends Component {
 	};
 
 	render() {
+		const { invalid, submitting, pristine } = this.props;
+
 		return (
 			<Grid>
 				<Grid.Column width={10}>
@@ -80,9 +83,11 @@ export class EventForm extends Component {
 							/>
 							<Field
 								name="date"
-								type="date"
-								component={TextInput}
-								placeholder="Event Date"
+								dateFormat="DD MMMM H:mm"
+								timeFormat="H:mm"
+								showTimeSelect
+								component={DateInput}
+								placeholder="Date and Time of event"
 							/>
 							<Button
 								negative
@@ -91,7 +96,11 @@ export class EventForm extends Component {
 							>
 								Cancel
 							</Button>
-							<Button positive type="submit">
+							<Button
+								disabled={invalid || submitting || pristine}
+								positive
+								type="submit"
+							>
 								Submit
 							</Button>
 						</Form>
