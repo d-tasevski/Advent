@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import EventListItem from './EventListItem';
 
-const EventList = ({ events = [], selectEvent, deleteEvent }) => (
+const EventList = ({ events = [], deleteEvent }) => (
 	<div>
 		{events.map(e => (
 			<EventListItem event={e} deleteEvent={deleteEvent} key={e.id} />
@@ -13,7 +13,6 @@ const EventList = ({ events = [], selectEvent, deleteEvent }) => (
 
 EventList.propTypes = {
 	events: PropTypes.arrayOf(PropTypes.shape({})),
-	deleteEvent: PropTypes.func.isRequired,
 };
 EventList.defaultProps = {
 	events: [],

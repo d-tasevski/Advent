@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { reduxForm, Field } from 'redux-form';
 import { Segment, Form, Button } from 'semantic-ui-react';
-import { createEvent, updateEvent } from '../../actions/events';
 import cuid from 'cuid';
+
+import { createEvent, updateEvent } from '../../actions/events';
+import TextInput from '../common/TextInput';
 
 const initialState = {
 	title: '',
@@ -70,12 +73,11 @@ export class EventForm extends Component {
 			<Segment>
 				<Form onSubmit={this.onSubmit}>
 					<Form.Field>
-						<label>Event Title</label>
-						<input
+						<Field
 							name="title"
-							onChange={this.onChange}
-							value={title}
-							placeholder="First Name"
+							type="text"
+							component={TextInput}
+							placeholder="Event Title"
 						/>
 					</Form.Field>
 					<Form.Field>
@@ -132,4 +134,4 @@ const mapStateToProps = ({ events }) => ({ events });
 export default connect(
 	mapStateToProps,
 	{ createEvent, updateEvent }
-)(EventForm);
+)(reduxForm({ form: 'eventForm' })(EventForm));
