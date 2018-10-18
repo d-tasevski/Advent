@@ -1,25 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import EventListItem from './EventListItem';
 
-const EventList = ({ events, selectEvent, deleteEvent }) => (
+const EventList = ({ events = [], deleteEvent }) => (
 	<div>
 		{events.map(e => (
-			<EventListItem
-				event={e}
-				deleteEvent={deleteEvent}
-				selectEvent={selectEvent}
-				key={e.id}
-			/>
+			<EventListItem event={e} deleteEvent={deleteEvent} key={e.id} />
 		))}
 	</div>
 );
 
 EventList.propTypes = {
 	events: PropTypes.arrayOf(PropTypes.shape({})),
-	selectEvent: PropTypes.func.isRequired,
-	deleteEvent: PropTypes.func.isRequired,
 };
 EventList.defaultProps = {
 	events: [],

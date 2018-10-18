@@ -1,4 +1,12 @@
-export const events = [
+import KeyMirror from 'keymirror';
+
+export const types = KeyMirror({
+	CREATE_EVENT: null,
+	UPDATE_EVENT: null,
+	DELETE_EVENT: null,
+});
+
+export const initialState = [
 	{
 		id: '1',
 		title: 'Trip to Tower of London',
@@ -47,4 +55,13 @@ export const events = [
 			},
 		],
 	},
+];
+
+export const categories = [
+	{ key: 'drinks', text: 'Drinks', value: 'drinks' },
+	{ key: 'culture', text: 'Culture', value: 'culture' },
+	{ key: 'film', text: 'Film', value: 'film' },
+	{ key: 'food', text: 'Food', value: 'food' },
+	{ key: 'music', text: 'Music', value: 'music' },
+	{ key: 'travel', text: 'Travel', value: 'travel' },
 ];

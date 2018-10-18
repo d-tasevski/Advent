@@ -1,0 +1,12 @@
+.EventImageStyle {
+	filter: brightness(30%);
+}
+
+.EventImageTextStyle {
+	position: absolute !important;
+	bottom: 5%;
+	left: 5%;
+	width: 100%;
+	height: auto;
+	color: white;
+}

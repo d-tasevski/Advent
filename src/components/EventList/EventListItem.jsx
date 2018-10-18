@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Segment, Item, Icon, List, Button } from 'semantic-ui-react';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
+import { deleteEvent } from '../../actions/events';
 import EventListAttendee from './EventListAttendee';
 
-const EventListItem = ({ event, selectEvent, deleteEvent }) => {
-	const onSelect = () => selectEvent(event);
+const EventListItem = ({ event, deleteEvent }) => {
 	const onDelete = () => deleteEvent(event.id);
 
 	return (
@@ -41,8 +43,8 @@ const EventListItem = ({ event, selectEvent, deleteEvent }) => {
 				<p>{event.description}</p>
 				<Button
 					size="tiny"
-					onClick={onSelect}
-					as="a"
+					as={Link}
+					to={`/event/${event.id}`}
 					color="teal"
 					floated="right"
 					content="View"
@@ -62,8 +64,10 @@ const EventListItem = ({ event, selectEvent, deleteEvent }) => {
 
 EventListItem.propTypes = {
 	event: PropTypes.shape({}).isRequired,
-	selectEvent: PropTypes.func.isRequired,
 	deleteEvent: PropTypes.func.isRequired,
 };
 
-export default EventListItem;
+export default connect(
+	null,
+	{ deleteEvent }
+)(EventListItem);
