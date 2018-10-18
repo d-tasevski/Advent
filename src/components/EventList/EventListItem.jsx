@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Segment, Item, Icon, List, Button } from 'semantic-ui-react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 
+import { deleteEvent } from '../../actions/events';
 import EventListAttendee from './EventListAttendee';
 
-const EventListItem = ({ event, selectEvent, deleteEvent, history }) => {
-	const onSelect = () => selectEvent(event);
+const EventListItem = ({ event, deleteEvent }) => {
 	const onDelete = () => deleteEvent(event.id);
-	const goToDetailPage = () => history.push(`/event/${event.id}`);
 
 	return (
 		<Segment.Group>
@@ -64,8 +64,10 @@ const EventListItem = ({ event, selectEvent, deleteEvent, history }) => {
 
 EventListItem.propTypes = {
 	event: PropTypes.shape({}).isRequired,
-	selectEvent: PropTypes.func.isRequired,
 	deleteEvent: PropTypes.func.isRequired,
 };
 
-export default EventListItem;
+export default connect(
+	null,
+	{ deleteEvent }
+)(EventListItem);

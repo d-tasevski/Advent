@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Segment, Form, Button } from 'semantic-ui-react';
+import { createEvent, updateEvent } from '../../actions/events';
+import cuid from 'cuid';
 
 const initialState = {
 	title: '',
@@ -12,13 +15,11 @@ const initialState = {
 
 export class EventForm extends Component {
 	static propTypes = {
-		selectedEvent: PropTypes.shape({}),
-		createEvent: PropTypes.func.isRequired,
+		createEvent: PropTypes.func,
 		updateEvent: PropTypes.func,
 	};
 
 	static defaultProps = {
-		selectedEvent: {},
 		updateEvent: () => {},
 	};
 
@@ -28,16 +29,14 @@ export class EventForm extends Component {
 	};
 
 	componentDidMount() {
-		if (Object.keys(this.props.selectedEvent).length) {
-			this.setState({ event: this.props.selectedEvent, isUpdate: true });
+		if (this.props.match.params.id) {
+			const { id } = this.props.match.params;
+			const event = this.props.events.find(e => e.id === id);
+			if (event) this.setState({ event, isUpdate: true });
 		}
 	}
 
-	componentWillReceiveProps = nextProps => {
-		if (nextProps.selectedEvent !== this.props.selectedEvent) {
-			this.setState({ event: nextProps.selectedEvent, isUpdate: true });
-		}
-	};
+	clearState = () => this.setState({ event: initialState, isUpdate: false });
 
 	onChange = e => {
 		const { name, value } = e.target;
@@ -47,7 +46,19 @@ export class EventForm extends Component {
 	onSubmit = e => {
 		e.preventDefault();
 		const { event, isUpdate } = this.state;
-		return isUpdate ? this.props.updateEvent(event) : this.props.createEvent(event);
+		if (isUpdate) {
+			this.props.updateEvent(event);
+			this.clearState();
+			return this.props.history.goBack();
+		}
+		const newEvent = {
+			...event,
+			id: cuid(),
+			hostPhotoURL: '/assets/user.png',
+			attendees: [],
+		};
+		this.props.createEvent(newEvent);
+		this.props.history.push('/events');
 	};
 
 	render() {
@@ -104,7 +115,10 @@ export class EventForm extends Component {
 							placeholder="Enter the name of person hosting"
 						/>
 					</Form.Field>
-					<Button positive fluid type="submit">
+					<Button negative onClick={() => this.props.history.goBack()} type="button">
+						Cancel
+					</Button>
+					<Button positive type="submit">
 						Submit
 					</Button>
 				</Form>
@@ -113,4 +127,9 @@ export class EventForm extends Component {
 	}
 }
 
-export default EventForm;
+const mapStateToProps = ({ events }) => ({ events });
+
+export default connect(
+	mapStateToProps,
+	{ createEvent, updateEvent }
+)(EventForm);

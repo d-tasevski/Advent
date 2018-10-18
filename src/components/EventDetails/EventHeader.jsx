@@ -1,6 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Segment, Image, Item, Header, Button } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+
+import styles from './EventHeader.module.css';
+
 import moment from 'moment';
 
 const EventHeader = ({ event }) => {
@@ -8,12 +12,12 @@ const EventHeader = ({ event }) => {
 		<Segment.Group>
 			<Segment basic attached="top" style={{ padding: '0' }}>
 				<Image
-					style={eventImageStyle}
+					className={styles.EventImageStyle}
 					src={`/assets/categoryImages/${event.category}.jpg`}
 					fluid
 				/>
 
-				<Segment basic style={eventImageTextStyle}>
+				<Segment basic className={styles.EventImageTextStyle}>
 					<Item.Group>
 						<Item>
 							<Item.Content>
@@ -36,25 +40,12 @@ const EventHeader = ({ event }) => {
 				<Button>Cancel My Place</Button>
 				<Button color="teal">JOIN THIS EVENT</Button>
 
-				<Button color="orange" floated="right">
+				<Button as={Link} to={`/manage/${event.id}`} color="orange" floated="right">
 					Manage Event
 				</Button>
 			</Segment>
 		</Segment.Group>
 	);
-};
-
-const eventImageStyle = {
-	filter: 'brightness(30%)',
-};
-
-const eventImageTextStyle = {
-	position: 'absolute',
-	bottom: '5%',
-	left: '5%',
-	width: '100%',
-	height: 'auto',
-	color: 'white',
 };
 
 EventHeader.propTypes = {
