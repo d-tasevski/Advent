@@ -1,9 +1,16 @@
 import KeyMirror from 'keymirror';
 
 export const types = KeyMirror({
+	// Event types
 	CREATE_EVENT: null,
 	UPDATE_EVENT: null,
 	DELETE_EVENT: null,
+	// Modal types
+	MODAL_OPEN: null,
+	MODAL_CLOSE: null,
+	// Auth types
+	LOGIN_USER: null,
+	SIGN_OUT_USER: null,
 });
 
 export const initialState = [
