@@ -5,19 +5,24 @@ export const types = KeyMirror({
 	CREATE_EVENT: null,
 	UPDATE_EVENT: null,
 	DELETE_EVENT: null,
+	FETCH_EVENTS: null,
 	// Modal types
 	MODAL_OPEN: null,
 	MODAL_CLOSE: null,
 	// Auth types
 	LOGIN_USER: null,
 	SIGN_OUT_USER: null,
+	// Async events types
+	ASYNC_ACTION_START: null,
+	ASYNC_ACTION_END: null,
+	ASYNC_ACTION_ERROR: null,
 });
 
-export const initialState = [
+export const sampleData = [
 	{
 		id: '1',
 		title: 'Trip to Empire State building',
-		date: '2018-03-21',
+		date: '2018-03-21T18:00:00',
 		category: 'culture',
 		description:
 			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
@@ -45,7 +50,7 @@ export const initialState = [
 	{
 		id: '2',
 		title: 'Trip to Punch and Judy Pub',
-		date: '2018-03-18',
+		date: '2018-03-18T20:00:00',
 		category: 'drinks',
 		description:
 			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',

@@ -1,10 +1,15 @@
 import { types } from '../constants';
 
-export const login = credentials => ({
-	type: types.LOGIN_USER,
-	payload: {
-		credentials,
-	},
-});
+import { closeModal } from './modals';
+
+export const login = credentials => dispatch => {
+	dispatch({
+		type: types.LOGIN_USER,
+		payload: {
+			credentials,
+		},
+	});
+	return dispatch(closeModal());
+};
 
 export const logout = () => ({ type: types.SIGN_OUT_USER });
