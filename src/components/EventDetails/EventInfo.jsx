@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Segment, Grid, Icon, Button } from 'semantic-ui-react';
-import moment from 'moment';
+import format from 'date-fns/format';
 
 import EventMap from './EventMap';
 
@@ -16,6 +16,10 @@ class EventInfo extends Component {
 
 	state = {
 		mapVisible: false,
+	};
+
+	componentWillUnmount = () => {
+		this.setState({ mapVisible: false });
 	};
 
 	toggleMap = () => this.setState(prevState => ({ mapVisible: !prevState.mapVisible }));
@@ -41,7 +45,10 @@ class EventInfo extends Component {
 							<Icon name="calendar" size="large" color="teal" />
 						</Grid.Column>
 						<Grid.Column width={15}>
-							<span>{moment(event.date).format('DD MMMM H:mm')}</span>
+							<span>
+								{format(event.date, 'dddd Do MMMM')} at{' '}
+								{format(event.date, 'h:mm A')}
+							</span>
 						</Grid.Column>
 					</Grid>
 				</Segment>

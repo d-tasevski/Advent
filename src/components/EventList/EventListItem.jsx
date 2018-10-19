@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Segment, Item, Icon, List, Button } from 'semantic-ui-react';
-import moment from 'moment';
+import format from 'date-fns/format';
 import { Link } from 'react-router-dom';
 
 import { deleteEvent } from '../../actions/events';
@@ -28,8 +28,8 @@ const EventListItem = ({ event, deleteEvent }) => {
 			</Segment>
 			<Segment>
 				<span>
-					<Icon name="clock" /> {moment(event.date).format('DD MMMM H:mm')} |
-					<Icon name="marker" /> {event.venue}
+					<Icon name="clock" /> {format(event.date, 'dddd Do MMMM')} at{' '}
+					{format(event.date, 'HH:mm')} |<Icon name="marker" /> {event.venue}
 				</span>
 			</Segment>
 			<Segment secondary>

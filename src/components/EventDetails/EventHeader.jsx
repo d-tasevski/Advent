@@ -2,10 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Segment, Image, Item, Header, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import format from 'date-fns/format';
 
 import styles from './EventHeader.module.css';
-
-import moment from 'moment';
 
 const EventHeader = ({ event }) => {
 	return (
@@ -26,7 +25,7 @@ const EventHeader = ({ event }) => {
 									content={event.title}
 									style={{ color: 'white' }}
 								/>
-								<p>{moment(event.date).format('DD MMMM H:mm')}</p>
+								<p>{format(event.date, 'dddd Do MMMM')}</p>
 								<p>
 									Hosted by <strong>{event.hostedBy}</strong>
 								</p>

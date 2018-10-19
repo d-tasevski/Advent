@@ -5,6 +5,7 @@ import { Grid } from 'semantic-ui-react';
 
 import EventList from '../EventList/EventList';
 import LoadingComponent from '../common/LoadingComponent';
+import EventActivity from '../EventActivity/EventActivity';
 
 export class EventDashboard extends Component {
 	static propTypes = {
@@ -22,7 +23,7 @@ export class EventDashboard extends Component {
 					<EventList events={events} />
 				</Grid.Column>
 				<Grid.Column width={6}>
-					<p />
+					<EventActivity />
 				</Grid.Column>
 			</Grid>
 		);
