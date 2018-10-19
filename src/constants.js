@@ -11,6 +11,10 @@ export const types = KeyMirror({
 	// Auth types
 	LOGIN_USER: null,
 	SIGN_OUT_USER: null,
+	// Async events types
+	ASYNC_ACTION_START: null,
+	ASYNC_ACTION_END: null,
+	ASYNC_ACTION_ERROR: null,
 });
 
 export const initialState = [
