@@ -92,6 +92,7 @@ h1 {
 	position: sticky;
 	top: 0; /* required */
 	z-index: 10;
+	margin: 0;
 
 	background: #f85032; /* fallback for old browsers */
 	background-image: linear-gradient(
@@ -107,8 +108,8 @@ h1 {
 
 .main.container,
 .main.segment {
-	margin-top: 2em;
-	position: relative;
+	padding-top: 2rem;
+	/* height: 100%; */
 }
 
 .ui.center.aligned.segment.attendance-preview {
@@ -161,4 +162,12 @@ h1 {
 
 .h-mr-sm {
 	margin-right: 10px !important;
+}
+
+.ui.dimmer.backdrop {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
 }

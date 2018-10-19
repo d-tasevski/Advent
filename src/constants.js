@@ -5,6 +5,7 @@ export const types = KeyMirror({
 	CREATE_EVENT: null,
 	UPDATE_EVENT: null,
 	DELETE_EVENT: null,
+	FETCH_EVENTS: null,
 	// Modal types
 	MODAL_OPEN: null,
 	MODAL_CLOSE: null,
@@ -17,7 +18,7 @@ export const types = KeyMirror({
 	ASYNC_ACTION_ERROR: null,
 });
 
-export const initialState = [
+export const sampleData = [
 	{
 		id: '1',
 		title: 'Trip to Empire State building',
