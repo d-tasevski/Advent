@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { firestoreConnect } from 'react-redux-firebase';
 import { Grid } from 'semantic-ui-react';
 
 import EventList from '../EventList/EventList';
@@ -35,4 +36,7 @@ const mapStateToProps = ({ events, async: { isLoading } }) => ({
 	isLoading,
 });
 
-export default connect(mapStateToProps)(EventDashboard);
+export default connect(mapStateToProps)(
+	// Listen for 'events' collection
+	firestoreConnect([{ collection: 'events ' }])(EventDashboard)
+);

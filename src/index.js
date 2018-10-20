@@ -12,10 +12,10 @@ import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import configureStore from './store/store';
 import ScrollToTop from './helpers/ScrollToTop';
-import { loadEvents } from './actions/events';
+// import { loadEvents } from './actions/events';
 
 const store = configureStore();
-store.dispatch(loadEvents());
+// store.dispatch(loadEvents());
 
 const rootEl = document.getElementById('root');
 const Root = () => (
