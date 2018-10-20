@@ -28,14 +28,14 @@ const EventListItem = ({ event, deleteEvent }) => {
 			</Segment>
 			<Segment>
 				<span>
-					<Icon name="clock" /> {format(event.date, 'dddd Do MMMM')} at{' '}
-					{format(event.date, 'HH:mm')} |<Icon name="marker" /> {event.venue}
+					<Icon name="clock" /> {format(event.date.toDate(), 'dddd Do MMMM')} at{' '}
+					{format(event.date.toDate(), 'HH:mm')} |<Icon name="marker" /> {event.venue}
 				</span>
 			</Segment>
 			<Segment secondary>
 				<List horizontal>
-					{event.attendees.map(a => (
-						<EventListAttendee key={a.id} attendee={a} />
+					{Object.values(event.attendees).map((a, i) => (
+						<EventListAttendee key={i} attendee={a} />
 					))}
 				</List>
 			</Segment>
