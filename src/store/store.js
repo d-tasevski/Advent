@@ -13,6 +13,7 @@ const rxFirebaseConfig = {
 	// Let us know when our auth from firebase is available
 	attachAuthIsReady: true,
 	useFirestoreForProfile: true,
+	updateProfileOnLogin: false,
 };
 
 export default function(initialState) {
