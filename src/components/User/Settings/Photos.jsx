@@ -9,7 +9,7 @@ import { toastr } from 'react-redux-toastr';
 
 import 'cropperjs/dist/cropper.css';
 
-import { uploadProfileImg } from '../../../actions/user';
+import { uploadProfileImg, deleteImage, setMainPhoto } from '../../../actions/user';
 
 const query = ({ auth }) => [
 	{
@@ -57,9 +57,26 @@ class PhotosPage extends Component {
 		}
 	};
 
+	// Must be async if we want to catch the error
+	handleDeleteImage = img => async () => {
+		try {
+			return this.props.deleteImage(img);
+		} catch (err) {
+			toastr.error('Oops', err.message);
+		}
+	};
+
+	handleSetMainPhoto = photo => async () => {
+		try {
+			return this.props.setMainPhoto(photo);
+		} catch (err) {
+			toastr.error('Oops', err.message);
+		}
+	};
+
 	render() {
 		const { files, cropResult } = this.state;
-		const { profile } = this.props;
+		const { profile, isLoading } = this.props;
 		const photos = this.props.photos
 			? this.props.photos.filter(p => p.url !== profile.photoURL)
 			: [];
@@ -109,12 +126,15 @@ class PhotosPage extends Component {
 								<Button.Group>
 									<Button
 										onClick={this.uploadImage}
+										disabled={isLoading}
+										loading={isLoading}
 										style={{ width: '100px' }}
 										positive
 										icon="check"
 									/>
 									<Button
 										onClick={this.cancelCrop}
+										disabled={isLoading}
 										style={{ width: '100px' }}
 										icon="close"
 									/>
@@ -129,17 +149,28 @@ class PhotosPage extends Component {
 
 				<Card.Group itemsPerRow={5}>
 					<Card>
-						<Image src={profile.photoURL} />
+						<Image src={profile.photoURL || '/assets/user.png'} />
 						<Button positive>Main Photo</Button>
 					</Card>
 					{photos.map(p => (
 						<Card key={p.id}>
 							<Image src={p.url} />
 							<div className="ui two buttons">
-								<Button basic color="green">
+								<Button
+									onClick={this.handleSetMainPhoto(p)}
+									disabled={isLoading}
+									basic
+									color="green"
+								>
 									{p.name}
 								</Button>
-								<Button basic icon="trash" color="red" />
+								<Button
+									onClick={this.handleDeleteImage(p)}
+									basic
+									icon="trash"
+									color="red"
+									disabled={isLoading}
+								/>
 							</div>
 						</Card>
 					))}
@@ -153,12 +184,13 @@ const mapStateToProps = state => ({
 	auth: state.firebase.auth,
 	profile: state.firebase.profile,
 	photos: state.firestore.ordered.photos,
+	isLoading: state.async.isLoading,
 });
 
 export default compose(
 	connect(
 		mapStateToProps,
-		{ uploadProfileImg }
+		{ uploadProfileImg, deleteImage, setMainPhoto }
 	),
 	firestoreConnect(auth => query(auth))
 )(PhotosPage);
