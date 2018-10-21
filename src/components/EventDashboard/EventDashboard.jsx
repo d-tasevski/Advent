@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { firestoreConnect } from 'react-redux-firebase';
 import { Grid } from 'semantic-ui-react';
 
 import EventList from '../EventList/EventList';
@@ -15,6 +16,7 @@ export class EventDashboard extends Component {
 
 	render() {
 		const { events, isLoading } = this.props;
+		console.log(events);
 
 		if (isLoading) return <LoadingComponent inverted={true} />;
 		return (
@@ -30,9 +32,12 @@ export class EventDashboard extends Component {
 	}
 }
 
-const mapStateToProps = ({ events, async: { isLoading } }) => ({
-	events,
+const mapStateToProps = ({ firestore, async: { isLoading } }) => ({
+	events: firestore.ordered.events,
 	isLoading,
 });
 
-export default connect(mapStateToProps)(EventDashboard);
+export default connect(mapStateToProps)(
+	// Listen for 'events' collection
+	firestoreConnect([{ collection: 'events' }])(EventDashboard)
+);

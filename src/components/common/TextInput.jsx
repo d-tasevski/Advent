@@ -18,7 +18,7 @@ const TextInput = ({ input, width, type, placeholder, meta: { touched, error } }
 
 TextInput.propTypes = {
 	input: PropTypes.shape({}),
-	width: PropTypes.string,
+	width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	type: PropTypes.string,
 	placeholder: PropTypes.string,
 };
