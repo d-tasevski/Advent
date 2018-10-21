@@ -4,6 +4,7 @@ import { Menu, Dropdown, Image } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
 
 const SignedInMenu = ({ signOut, profile }) => {
+	console.log(profile);
 	return (
 		<Menu.Item position="right">
 			<Image avatar spaced="right" src={profile.photoURL || '/assets/user.png'} />
