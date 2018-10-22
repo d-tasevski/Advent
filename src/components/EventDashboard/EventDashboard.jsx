@@ -16,7 +16,6 @@ export class EventDashboard extends Component {
 
 	render() {
 		const { events, isLoading } = this.props;
-		console.log(events);
 
 		if (isLoading) return <LoadingComponent inverted={true} />;
 		return (
