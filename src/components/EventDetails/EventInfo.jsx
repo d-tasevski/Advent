@@ -9,7 +9,7 @@ class EventInfo extends Component {
 	static propTypes = {
 		event: PropTypes.shape({
 			description: PropTypes.string,
-			date: PropTypes.string,
+			date: PropTypes.shape({}),
 			venue: PropTypes.string,
 		}),
 	};
@@ -46,8 +46,8 @@ class EventInfo extends Component {
 						</Grid.Column>
 						<Grid.Column width={15}>
 							<span>
-								{format(event.date.toDate(), 'dddd Do MMMM')} at{' '}
-								{format(event.date.toDate(), 'h:mm A')}
+								{event.date && format(event.date.toDate(), 'dddd Do MMMM')} at{' '}
+								{event.date && format(event.date.toDate(), 'h:mm A')}
 							</span>
 						</Grid.Column>
 					</Grid>

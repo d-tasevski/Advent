@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Segment, List, Label, Item } from 'semantic-ui-react';
 
 const isHost = false;
@@ -33,7 +34,7 @@ const EventSidebar = ({ attendees = [] }) => {
 							<Item.Image size="tiny" src={a.photoURL} />
 							<Item.Content verticalAlign="middle">
 								<Item.Header as="h3">
-									<a>{a.name}</a>
+									<Link to={`/profile/${a.id}`}>{a.displayName}</Link>
 								</Item.Header>
 							</Item.Content>
 						</Item>

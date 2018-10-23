@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { firestoreConnect } from 'react-redux-firebase';
+import { firestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { Grid } from 'semantic-ui-react';
 
 import EventList from '../EventList/EventList';
@@ -11,13 +11,13 @@ import EventActivity from '../EventActivity/EventActivity';
 export class EventDashboard extends Component {
 	static propTypes = {
 		events: PropTypes.arrayOf(PropTypes.shape({})),
-		isLoading: PropTypes.bool,
 	};
 
 	render() {
-		const { events, isLoading } = this.props;
+		const { events } = this.props;
 
-		if (isLoading) return <LoadingComponent inverted={true} />;
+		if (!isLoaded(events) || isEmpty(events)) return <LoadingComponent inverted={true} />;
+
 		return (
 			<Grid>
 				<Grid.Column width={10}>
@@ -31,9 +31,8 @@ export class EventDashboard extends Component {
 	}
 }
 
-const mapStateToProps = ({ firestore, async: { isLoading } }) => ({
+const mapStateToProps = ({ firestore }) => ({
 	events: firestore.ordered.events,
-	isLoading,
 });
 
 export default connect(mapStateToProps)(
