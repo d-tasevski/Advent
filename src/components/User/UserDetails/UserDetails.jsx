@@ -10,9 +10,13 @@ import UserDetailsDescription from './UserDetailsDescription';
 import UserDetailsPhotos from './UserDetailsPhotos';
 import UserDetailsSidebar from './UserDetailsSidebar';
 import UserDetailsEvents from './UserDetailsEvents';
+import LoadingComponent from '../../common/LoadingComponent';
 
-const UserDetails = ({ profile, photos, auth, match }) => {
+const UserDetails = ({ profile, photos, auth, match, requesting }) => {
 	const isCurrentUser = auth.uid === match.params.id;
+	const isLoading = Object.values(requesting).some(o => o === true);
+
+	if (isLoading) return <LoadingComponent inverted={true} />;
 
 	return (
 		<Grid>
