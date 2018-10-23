@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Segment, Image, Item, Header, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
@@ -6,7 +6,13 @@ import format from 'date-fns/format';
 
 import styles from './EventHeader.module.css';
 
-const EventHeader = ({ event }) => {
+const EventHeader = ({ event, isGoing, isHost, goingToEvent, cancelGoingToEvent }) => {
+	const handleEventAttendance = () => {
+		if (!isGoing) return goingToEvent(event);
+
+		return cancelGoingToEvent(event);
+	};
+
 	return (
 		<Segment.Group>
 			<Segment basic attached="top" style={{ padding: '0' }}>
@@ -25,7 +31,7 @@ const EventHeader = ({ event }) => {
 									content={event.title}
 									style={{ color: 'white' }}
 								/>
-								<p>{format(event.date.toDate(), 'dddd Do MMMM')}</p>
+								<p>{event.date && format(event.date.toDate(), 'dddd Do MMMM')}</p>
 								<p>
 									Hosted by <strong>{event.hostedBy}</strong>
 								</p>
@@ -36,12 +42,17 @@ const EventHeader = ({ event }) => {
 			</Segment>
 
 			<Segment attached="bottom">
-				<Button>Cancel My Place</Button>
-				<Button color="teal">JOIN THIS EVENT</Button>
-
-				<Button as={Link} to={`/manage/${event.id}`} color="orange" floated="right">
-					Manage Event
-				</Button>
+				{!isHost ? (
+					<Fragment>
+						<Button onClick={handleEventAttendance} color={isGoing ? 'orange' : 'teal'}>
+							{isGoing ? 'Cancel My Place' : 'JOIN THIS EVENT'}
+						</Button>
+					</Fragment>
+				) : (
+					<Button as={Link} to={`/manage/${event.id}`} color="orange">
+						Manage Event
+					</Button>
+				)}
 			</Segment>
 		</Segment.Group>
 	);
