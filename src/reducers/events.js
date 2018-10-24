@@ -3,7 +3,7 @@ import { types } from '../constants';
 
 const initialState = [];
 
-export const fetchEvents = (state, payload) => payload;
+export const fetchEvents = (state, payload) => payload.events;
 
 export const createEvent = (state, payload) => [...state, payload.event];
 

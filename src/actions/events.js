@@ -3,25 +3,9 @@ import { toastr } from 'react-redux-toastr';
 import { types } from '../constants';
 import { asyncActionStart, asyncActionEnd, asyncActionError } from './async';
 import { fetchSampleData } from '../mockAPI';
+import firebase from '../config/firebase';
 import { createNewEvent } from '../helpers/eventHelpers';
 import moment from 'moment';
-
-export const fetchEvents = events => ({
-	type: types.FETCH_EVENTS,
-	payload: events,
-});
-
-export const loadEvents = () => async dispatch => {
-	try {
-		dispatch(asyncActionStart());
-		const events = await fetchSampleData();
-		dispatch(fetchEvents(events));
-		dispatch(asyncActionEnd());
-	} catch (err) {
-		console.log(err);
-		dispatch(asyncActionError());
-	}
-};
 
 export const createEvent = event => async (dispatch, getState, { getFirestore }) => {
 	const firestore = getFirestore();
@@ -52,20 +36,6 @@ export const updateEvent = event => async (dispatch, getState, { getFirestore })
 	try {
 		await firestore.update(`events/${event.id}`, event);
 		toastr.success('Success!', 'Event has been updated');
-	} catch (err) {
-		toastr.error('Oops', 'Something went wrong');
-	}
-};
-
-export const deleteEvent = eventID => async dispatch => {
-	try {
-		dispatch({
-			type: types.DELETE_EVENT,
-			payload: {
-				eventID,
-			},
-		});
-		toastr.success('Success!', 'Event has been deleted');
 	} catch (err) {
 		toastr.error('Oops', 'Something went wrong');
 	}
@@ -134,5 +104,32 @@ export const cancelGoingToEvent = event => async (dispatch, getState, { getFires
 	} catch (err) {
 		console.error(err);
 		toastr.error('Oops', 'Something went wrong');
+	}
+};
+
+export const getEventsForDashboard = () => async (dispatch, getState) => {
+	// Get reference for todays date, so that we have something to compare against when sorting by date
+	const today = new Date(Date.now());
+	const firestore = firebase.firestore();
+	const eventsQuery = firestore.collection('events').where('date', '>=', today);
+
+	try {
+		dispatch(asyncActionStart());
+		const querySnapshot = await eventsQuery.get();
+		let events = [];
+
+		querySnapshot.docs.forEach(doc => {
+			let event = { ...doc.data(), id: doc.id };
+			events.push(event);
+		});
+
+		dispatch({
+			type: types.FETCH_EVENTS,
+			payload: { events },
+		});
+		dispatch(asyncActionEnd());
+	} catch (err) {
+		console.error(err);
+		dispatch(asyncActionError());
 	}
 };

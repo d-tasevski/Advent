@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { firestoreConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { Grid } from 'semantic-ui-react';
 
+import { getEventsForDashboard } from '../../actions/events';
 import EventList from '../EventList/EventList';
 import LoadingComponent from '../common/LoadingComponent';
 import EventActivity from '../EventActivity/EventActivity';
@@ -13,10 +14,14 @@ export class EventDashboard extends Component {
 		events: PropTypes.arrayOf(PropTypes.shape({})),
 	};
 
-	render() {
-		const { events } = this.props;
+	componentDidMount() {
+		this.props.getEventsForDashboard();
+	}
 
-		if (!isLoaded(events) || isEmpty(events)) return <LoadingComponent inverted={true} />;
+	render() {
+		const { events, isLoading } = this.props;
+
+		if (isLoading) return <LoadingComponent inverted={true} />;
 
 		return (
 			<Grid>
@@ -31,11 +36,15 @@ export class EventDashboard extends Component {
 	}
 }
 
-const mapStateToProps = ({ firestore }) => ({
-	events: firestore.ordered.events,
+const mapStateToProps = ({ events, async }) => ({
+	events,
+	isLoading: async.isLoading,
 });
 
-export default connect(mapStateToProps)(
+export default connect(
+	mapStateToProps,
+	{ getEventsForDashboard }
+)(
 	// Listen for 'events' collection
 	firestoreConnect([{ collection: 'events' }])(EventDashboard)
 );
