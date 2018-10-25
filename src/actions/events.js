@@ -107,15 +107,37 @@ export const cancelGoingToEvent = event => async (dispatch, getState, { getFires
 	}
 };
 
-export const getEventsForDashboard = () => async (dispatch, getState) => {
+export const getEventsForDashboard = lastEvent => async (dispatch, getState) => {
 	// Get reference for todays date, so that we have something to compare against when sorting by date
 	const today = new Date(Date.now());
 	const firestore = firebase.firestore();
-	const eventsQuery = firestore.collection('events').where('date', '>=', today);
+	const eventsRef = firestore.collection('events');
 
 	try {
 		dispatch(asyncActionStart());
-		const querySnapshot = await eventsQuery.get();
+		const startAfter =
+			lastEvent &&
+			(await firestore
+				.collection('events')
+				.doc(lastEvent.id)
+				.get());
+		let query;
+
+		// Check if we're going to use pagination or non pagination query
+		lastEvent
+			? (query = eventsRef
+					.where('date', '>=', today)
+					.orderBy('date')
+					.startAfter(startAfter)
+					.limit(2))
+			: (query = eventsRef
+					.where('date', '>=', today)
+					.orderBy('date')
+					.limit(2));
+
+		const querySnapshot = await query.get();
+
+		if (!querySnapshot.docs.length) return dispatch(asyncActionEnd());
 		let events = [];
 
 		querySnapshot.docs.forEach(doc => {
@@ -128,6 +150,7 @@ export const getEventsForDashboard = () => async (dispatch, getState) => {
 			payload: { events },
 		});
 		dispatch(asyncActionEnd());
+		return querySnapshot;
 	} catch (err) {
 		console.error(err);
 		dispatch(asyncActionError());

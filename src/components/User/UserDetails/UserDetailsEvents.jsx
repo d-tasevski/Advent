@@ -1,33 +1,39 @@
 import React from 'react';
-import { Card, Grid, Header, Image, Menu, Segment } from 'semantic-ui-react';
+import { Card, Grid, Header, Image, Segment, Tab } from 'semantic-ui-react';
+import format from 'date-fns/format';
+import { Link } from 'react-router-dom';
 
-const UserDetailsEvents = () => (
+const panels = [
+	{ menuItem: 'All Events', panel: { key: 'allEvents' } },
+	{ menuItem: 'Past Events', panel: { key: 'pastEvents' } },
+	{ menuItem: 'Future Events', panel: { key: 'futureEvents' } },
+	{ menuItem: 'Events Hosted', panel: { key: 'eventsHosted' } },
+];
+
+const UserDetailsEvents = ({ events, eventsLoading, changeTab }) => (
 	<Grid.Column width={12}>
-		<Segment attached>
+		<Segment loading={eventsLoading} attached>
 			<Header icon="calendar" content="Events" />
-			<Menu secondary pointing>
-				<Menu.Item name="All Events" active />
-				<Menu.Item name="Past Events" />
-				<Menu.Item name="Future Events" />
-				<Menu.Item name="Events Hosted" />
-			</Menu>
-
+			<Tab
+				onTabChange={(e, data) => changeTab(e, data)}
+				panes={panels}
+				menu={{ secondary: true, pointing: true }}
+			/>
 			<Card.Group itemsPerRow={5}>
-				<Card>
-					<Image src={'/assets/categoryImages/drinks.jpg'} />
-					<Card.Content>
-						<Card.Header textAlign="center">Event Title</Card.Header>
-						<Card.Meta textAlign="center">28th March 2018 at 10:00 PM</Card.Meta>
-					</Card.Content>
-				</Card>
-
-				<Card>
-					<Image src={'/assets/categoryImages/drinks.jpg'} />
-					<Card.Content>
-						<Card.Header textAlign="center">Event Title</Card.Header>
-						<Card.Meta textAlign="center">28th March 2018 at 10:00 PM</Card.Meta>
-					</Card.Content>
-				</Card>
+				{console.log(events)}
+				{events &&
+					events.map(e => (
+						<Card as={Link} to={`/event/${e.id}`} key={e.id}>
+							<Image src={`/assets/categoryImages/${e.category}.jpg`} />
+							<Card.Content>
+								<Card.Header textAlign="center">{e.title}</Card.Header>
+								<Card.Meta textAlign="center">
+									<div>{e.date && format(e.date.toDate(), 'DD MMM YYYY')}</div>
+									<div>{e.date && format(e.date.toDate(), 'h:mm A')}</div>
+								</Card.Meta>
+							</Card.Content>
+						</Card>
+					))}
 			</Card.Group>
 		</Segment>
 	</Grid.Column>
