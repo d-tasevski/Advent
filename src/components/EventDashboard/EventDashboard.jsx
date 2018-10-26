@@ -19,7 +19,7 @@ export class EventDashboard extends Component {
 
 	async componentDidMount() {
 		const next = await this.props.getEventsForDashboard();
-		console.log(next);
+
 		if (next && next.docs && next.docs.length > 1) {
 			this.setState({ moreEvents: true, isLoadingInit: false });
 		}
@@ -36,7 +36,7 @@ export class EventDashboard extends Component {
 		// This will give us the last document received
 		const lastEvent = events && events[events.length - 1];
 		let next = await this.props.getEventsForDashboard(lastEvent);
-		console.log('DOCS', next.docs);
+
 		if (next && !next.docs) {
 			this.setState({ moreEvents: false });
 			toastr.info('Info', 'There are no more events currently');
