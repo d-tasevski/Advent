@@ -158,7 +158,11 @@ export const getEventsForDashboard = lastEvent => async (dispatch, getState) => 
 	}
 };
 
-export const addEventComment = (eventID, values) => async (dispatch, getState, { getFirebase }) => {
+export const addEventComment = (eventID, values, parentID) => async (
+	dispatch,
+	getState,
+	{ getFirebase }
+) => {
 	const firebase = getFirebase();
 	const { profile } = getState().firebase;
 	const user = firebase.auth().currentUser;
@@ -168,6 +172,7 @@ export const addEventComment = (eventID, values) => async (dispatch, getState, {
 		uid: user.uid,
 		text: values.comment,
 		date: Date.now(),
+		parentID,
 	};
 
 	try {

@@ -6,7 +6,7 @@ import { withFirestore, firebaseConnect, isEmpty } from 'react-redux-firebase';
 import { compose } from 'redux';
 
 import { goingToEvent, cancelGoingToEvent, addEventComment } from '../../actions/events';
-import { objectToArray } from '../../helpers/eventHelpers';
+import { objectToArray, createDataTree } from '../../helpers/eventHelpers';
 import EventHeader from './EventHeader';
 import EventChat from './EventChat';
 import EventSidebar from './EventSidebar';
@@ -39,6 +39,7 @@ class EventDetails extends Component {
 		const isHost = event.hostUID === auth.uid;
 		const attendees = event && event.attendees && objectToArray(event.attendees);
 		const isGoing = attendees && attendees.some(a => a.id === auth.uid);
+		const chatTree = !isEmpty(eventChat) && createDataTree(eventChat);
 
 		return (
 			<Grid>
@@ -52,7 +53,7 @@ class EventDetails extends Component {
 					/>
 					<EventInfo event={event} />
 					<EventChat
-						eventChat={eventChat}
+						eventChat={chatTree}
 						addEventComment={addEventComment}
 						eventID={event.id}
 					/>
