@@ -2,11 +2,9 @@ import { toastr } from 'react-redux-toastr';
 
 import { types } from '../constants';
 import { asyncActionStart, asyncActionEnd, asyncActionError } from './async';
-import { fetchSampleData } from '../mockAPI';
 import firebase from '../config/firebase';
 import { createNewEvent } from '../helpers/eventHelpers';
 import moment from 'moment';
-import { values } from 'redux-form';
 
 export const createEvent = event => async (dispatch, getState, { getFirestore }) => {
 	const firestore = getFirestore();
