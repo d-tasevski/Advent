@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
-import { Grid, Button, Loader } from 'semantic-ui-react';
+import { Grid, Loader } from 'semantic-ui-react';
+import { toastr } from 'react-redux-toastr';
 
+import { query } from '../../queries/eventQueries';
 import { getEventsForDashboard } from '../../actions/events';
 import EventList from '../EventList/EventList';
 import LoadingComponent from '../common/LoadingComponent';
 import EventActivity from '../EventActivity/EventActivity';
-import { toastr } from 'react-redux-toastr';
 
 export class EventDashboard extends Component {
 	static propTypes = {
@@ -80,5 +81,5 @@ export default connect(
 	{ getEventsForDashboard }
 )(
 	// Listen for 'events' collection
-	firestoreConnect([{ collection: 'events' }])(EventDashboard)
+	firestoreConnect(query)(EventDashboard)
 );
