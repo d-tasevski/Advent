@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { firestoreConnect } from 'react-redux-firebase';
-import { Grid, Button, Loader } from 'semantic-ui-react';
+import { Grid, Loader } from 'semantic-ui-react';
+import { toastr } from 'react-redux-toastr';
 
+import { query } from '../../queries/eventQueries';
 import { getEventsForDashboard } from '../../actions/events';
 import EventList from '../EventList/EventList';
 import LoadingComponent from '../common/LoadingComponent';
 import EventActivity from '../EventActivity/EventActivity';
-import { toastr } from 'react-redux-toastr';
 
 export class EventDashboard extends Component {
 	static propTypes = {
@@ -16,6 +17,8 @@ export class EventDashboard extends Component {
 	};
 
 	state = { moreEvents: false, isLoadingInit: true, loadedEvents: [] };
+
+	listCtxRef = createRef();
 
 	async componentDidMount() {
 		const next = await this.props.getEventsForDashboard();
@@ -44,7 +47,7 @@ export class EventDashboard extends Component {
 	};
 
 	render() {
-		const { isLoading } = this.props;
+		const { isLoading, activities } = this.props;
 		const { moreEvents, loadedEvents } = this.state;
 
 		if (this.state.isLoadingInit) return <LoadingComponent inverted={true} />;
@@ -52,15 +55,17 @@ export class EventDashboard extends Component {
 		return (
 			<Grid>
 				<Grid.Column width={10}>
-					<EventList
-						isLoading={isLoading}
-						moreEvents={moreEvents}
-						getMoreEvents={this.getNextEvents}
-						events={loadedEvents}
-					/>
+					<div ref={this.listCtxRef}>
+						<EventList
+							isLoading={isLoading}
+							moreEvents={moreEvents}
+							getMoreEvents={this.getNextEvents}
+							events={loadedEvents}
+						/>
+					</div>
 				</Grid.Column>
 				<Grid.Column width={6}>
-					<EventActivity />
+					<EventActivity activities={activities} ctxRef={this.listCtxRef.current} />
 				</Grid.Column>
 				<Grid.Column width={10} style={{ padding: '2rem' }}>
 					<Loader active={isLoading} />
@@ -70,9 +75,10 @@ export class EventDashboard extends Component {
 	}
 }
 
-const mapStateToProps = ({ events, async }) => ({
+const mapStateToProps = ({ events, async, firestore }) => ({
 	events,
 	isLoading: async.isLoading,
+	activities: firestore.ordered.activity,
 });
 
 export default connect(
@@ -80,5 +86,5 @@ export default connect(
 	{ getEventsForDashboard }
 )(
 	// Listen for 'events' collection
-	firestoreConnect([{ collection: 'events' }])(EventDashboard)
+	firestoreConnect(query)(EventDashboard)
 );

@@ -1,15 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Header, Segment } from 'semantic-ui-react';
+import { Header, Segment, Feed, Sticky } from 'semantic-ui-react';
 
-const EventActivity = props => {
+import EventActivityItem from './EventActivityItem';
+
+const EventActivity = ({ activities, ctxRef }) => {
 	return (
-		<div>
+		<Sticky context={ctxRef} offset={100}>
 			<Header attached="top" content="Recent activity" />
 			<Segment attached>
-				<p>Recent activity</p>
+				<Feed>
+					{activities &&
+						activities.map(a => <EventActivityItem key={a.id} activity={a} />)}
+				</Feed>
 			</Segment>
-		</div>
+		</Sticky>
 	);
 };
 
