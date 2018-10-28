@@ -20,7 +20,6 @@ const UserDetailsEvents = ({ events, eventsLoading, changeTab }) => (
 				menu={{ secondary: true, pointing: true }}
 			/>
 			<Card.Group itemsPerRow={5}>
-				{console.log(events)}
 				{events &&
 					events.map(e => (
 						<Card as={Link} to={`/event/${e.id}`} key={e.id}>

@@ -6,7 +6,7 @@ import EventDashboard from './EventDashboard/EventDashboard';
 import NavBar from './NavBar/NavBar';
 import Home from './Home/Home';
 import EventDetails from './EventDetails/EventDetails';
-import UsersDashboard from './User/UsersDashboard/UsersDashboard';
+import PeopleDashboard from './User/PeopleDashboard/PeopleDashboard';
 import UserDetails from './User/UserDetails/UserDetails';
 import SettingsDashboard from './User/Settings/SettingsDashboard';
 import EventForm from './EventForm/EventForm';
@@ -31,7 +31,7 @@ class App extends Component {
 									<Route path="/events" component={EventDashboard} />
 									<Route path="/event/:id" component={EventDetails} />
 									<Route path="/manage/:id" component={EventForm} />
-									<Route path="/people" component={UsersDashboard} />
+									<Route path="/people" component={PeopleDashboard} />
 									<Route path="/profile/:id" component={UserDetails} />
 									<Route path="/settings" component={SettingsDashboard} />
 									<Route path="/create-event" component={EventForm} />
