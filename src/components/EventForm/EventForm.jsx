@@ -154,13 +154,15 @@ export class EventForm extends Component {
 							>
 								Cancel
 							</Button>
-							<Button
-								color={event.cancelled ? 'green' : 'orange'}
-								floated="left"
-								content={event.cancelled ? 'Reactivate Event' : 'Cancel Event'}
-								onClick={() => cancelToggle(!event.cancelled, event.id)}
-								type="button"
-							/>
+							{event.id ? (
+								<Button
+									color={event.cancelled ? 'green' : 'orange'}
+									floated="left"
+									content={event.cancelled ? 'Reactivate Event' : 'Cancel Event'}
+									onClick={() => cancelToggle(!event.cancelled, event.id)}
+									type="button"
+								/>
+							) : null}
 							<Button
 								disabled={invalid || submitting || pristine}
 								loading={isLoading}

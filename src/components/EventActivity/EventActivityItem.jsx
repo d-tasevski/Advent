@@ -10,11 +10,11 @@ class EventActivityItem extends Component {
 				return (
 					<div>
 						New Event!{' '}
-						<Feed.User as={Link} to={{ pathname: '/profile/' + activity.hostUid }}>
+						<Feed.User as={Link} to={{ pathname: '/profile/' + activity.hostUID }}>
 							{activity.hostedBy}
 						</Feed.User>{' '}
 						is hosting{' '}
-						<Link to={{ pathname: '/event/' + activity.eventId }}>
+						<Link to={{ pathname: '/event/' + activity.eventID }}>
 							{activity.title}
 						</Link>
 					</div>
@@ -23,11 +23,11 @@ class EventActivityItem extends Component {
 				return (
 					<div>
 						Event Cancelled!{' '}
-						<Feed.User as={Link} to={{ pathname: '/profile/' + activity.hostUid }}>
+						<Feed.User as={Link} to={{ pathname: '/profile/' + activity.hostUID }}>
 							{activity.hostedBy}
 						</Feed.User>{' '}
 						has cancelled{' '}
-						<Link to={{ pathname: '/event/' + activity.eventId }}>
+						<Link to={{ pathname: '/event/' + activity.eventID }}>
 							{activity.title}
 						</Link>
 					</div>

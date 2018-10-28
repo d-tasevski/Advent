@@ -11,6 +11,8 @@ import UserDetails from './User/UserDetails/UserDetails';
 import SettingsDashboard from './User/Settings/SettingsDashboard';
 import EventForm from './EventForm/EventForm';
 import ModalManager from './Modals/ModalManager';
+import NotFound from './common/NotFound';
+import { withAuthWrapper } from './Auth/withAuthWrapper';
 
 class App extends Component {
 	render() {
@@ -30,11 +32,28 @@ class App extends Component {
 								<Switch>
 									<Route path="/events" component={EventDashboard} />
 									<Route path="/event/:id" component={EventDetails} />
-									<Route path="/manage/:id" component={EventForm} />
-									<Route path="/people" component={PeopleDashboard} />
-									<Route path="/profile/:id" component={UserDetails} />
-									<Route path="/settings" component={SettingsDashboard} />
-									<Route path="/create-event" component={EventForm} />
+									<Route
+										path="/manage/:id"
+										component={withAuthWrapper(EventForm)}
+									/>
+									<Route
+										path="/people"
+										component={withAuthWrapper(PeopleDashboard)}
+									/>
+									<Route
+										path="/profile/:id"
+										component={withAuthWrapper(UserDetails)}
+									/>
+									<Route
+										path="/settings"
+										component={withAuthWrapper(SettingsDashboard)}
+									/>
+									<Route
+										path="/create-event"
+										component={withAuthWrapper(EventForm)}
+									/>
+									<Route path="/error" component={NotFound} />
+									<Route component={NotFound} />
 								</Switch>
 							</Container>
 						</Fragment>
