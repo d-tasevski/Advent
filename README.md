@@ -1,12 +1,12 @@
 # :coffee: :sparkles: Advent :sparkles: :beer:
 
-> WIP
+> Discover and organize exciting events
 
-One Paragraph of project description goes here
+Application about connecting people and organizing and discovering events. Built with React, Redux, and :fire: Firebase/Firestore
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Clone repository to your machine `cd` into it and run `yarn` to install dependencies. After that you can run application with `yarn run start` and take a look in your browser at `localhost:3000`.
 
 ### Prerequisites
 
@@ -15,53 +15,17 @@ What things you need to install the software and how to install them
 -   `node`
 -   `npm || yarn`
 
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+TBD
 
 ## Built With
 
--   [React](reactjs.org) - The web framework used
--   [Redux](#)
--   [Firestore](#)
+-   [React](reactjs.org) - A JavaScript library for building user interfaces.
+-   [Redux](https://redux.js.org/) - Predictable state container for JavaScript apps.
+-   [Firestore](https://firebase.google.com/docs/firestore/) - Flexible, scalable database for mobile, web, and server development.
+-   [Semantic UI](https://react.semantic-ui.com/) - Framework that helps create beautiful, responsive layouts using human-friendly HTML.
+-   Bootstraped with [create-react-app](https://github.com/facebook/create-react-app).
 
 ## Contributing
 
