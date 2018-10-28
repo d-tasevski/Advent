@@ -59,14 +59,14 @@ export class EventForm extends Component {
 		});
 	};
 
-	onSubmit = values => {
+	onSubmit = async values => {
 		values.venueLatLng = this.state.venueLatLng;
 		// If is update
 		if (this.props.initialValues.id) {
 			if (Object.keys(values.venueLatLng).length === 0) {
 				values.venueLatLng = this.props.initialValues.venueLatLng;
 			}
-			this.props.updateEvent(values);
+			await this.props.updateEvent(values);
 			return this.props.history.goBack();
 		}
 		// else create new event
@@ -75,7 +75,14 @@ export class EventForm extends Component {
 	};
 
 	render() {
-		const { invalid, submitting, pristine, initialValues: event, cancelToggle } = this.props;
+		const {
+			invalid,
+			submitting,
+			pristine,
+			initialValues: event,
+			cancelToggle,
+			isLoading,
+		} = this.props;
 
 		return (
 			<Grid>
@@ -143,6 +150,7 @@ export class EventForm extends Component {
 								negative
 								onClick={() => this.props.history.goBack()}
 								type="button"
+								disabled={isLoading}
 							>
 								Cancel
 							</Button>
@@ -155,6 +163,7 @@ export class EventForm extends Component {
 							/>
 							<Button
 								disabled={invalid || submitting || pristine}
+								loading={isLoading}
 								positive
 								floated="right"
 								type="submit"
@@ -183,6 +192,7 @@ const mapStateToProps = (state, ownProps) => {
 
 	return {
 		initialValues: event,
+		isLoading: state.async.isLoading,
 	};
 };
 

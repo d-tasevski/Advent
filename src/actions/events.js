@@ -5,6 +5,7 @@ import { asyncActionStart, asyncActionEnd, asyncActionError } from './async';
 import firebase from '../config/firebase';
 import { createNewEvent } from '../helpers/eventHelpers';
 import moment from 'moment';
+import compareAsc from 'date-fns/compare_asc';
 
 export const createEvent = event => async (dispatch, getState, { getFirestore }) => {
 	const firestore = getFirestore();
@@ -27,16 +28,48 @@ export const createEvent = event => async (dispatch, getState, { getFirestore })
 	}
 };
 
-export const updateEvent = event => async (dispatch, getState, { getFirestore }) => {
-	const firestore = getFirestore();
+export const updateEvent = event => async (dispatch, getState) => {
+	dispatch(asyncActionStart());
+	const firestore = firebase.firestore();
+
 	if (event.date !== getState().firestore.ordered.events[0].date) {
 		event.date = moment(event.date).toDate();
 	}
+
 	try {
-		await firestore.update(`events/${event.id}`, event);
+		const eventDocRef = firestore.collection('events').doc(event.id);
+		const dateEqual = compareAsc(
+			getState().firestore.ordered.events[0].date.toDate(),
+			event.date
+		);
+
+		if (dateEqual !== 0) {
+			// if dates are not equal
+			const batch = firestore.batch();
+			await batch.update(eventDocRef, event);
+
+			const eventAttendeeRef = firestore.collection('event_attendee');
+			const eventAttendeeQuery = await eventAttendeeRef.where('eventID', '==', event.id);
+			const eventAttendeeQuerySnap = await eventAttendeeQuery.get();
+
+			for (let i = 0, len = eventAttendeeQuerySnap.docs.length; i < len; i++) {
+				const eventAttendeeDocRef = await firestore
+					.collection('event_attendee')
+					.doc(eventAttendeeQuerySnap.doc[i].id);
+
+				await batch.update(eventAttendeeDocRef, {
+					eventDate: event.date,
+				});
+			}
+			await batch.commit();
+		} else {
+			await eventDocRef.update(event);
+		}
 		toastr.success('Success!', 'Event has been updated');
+		dispatch(asyncActionEnd());
 	} catch (err) {
 		toastr.error('Oops', 'Something went wrong');
+		dispatch(asyncActionError());
 	}
 };
 
@@ -60,9 +93,10 @@ export const cancelToggle = (cancelled, eventID) => async (
 	}
 };
 
-export const goingToEvent = event => async (dispatch, getState, { getFirestore }) => {
-	const firestore = getFirestore();
-	const user = firestore.auth().currentUser;
+export const goingToEvent = event => async (dispatch, getState) => {
+	dispatch(asyncActionStart());
+	const firestore = firebase.firestore();
+	const user = firebase.auth().currentUser;
 	const { photoURL } = getState().firebase.profile;
 	const attendee = {
 		photoURL: photoURL || '/assets/user.png',
@@ -73,19 +107,30 @@ export const goingToEvent = event => async (dispatch, getState, { getFirestore }
 	};
 
 	try {
-		await firestore.update(`events/${event.id}`, {
-			[`attendees.${user.uid}`]: attendee,
+		const eventDocRef = firestore.collection('events').doc(event.id);
+		const eventAttendeeDocRef = firestore
+			.collection('event_attendee')
+			.doc(`${event.id}_${user.uid}`);
+
+		await firestore.runTransaction(async transaction => {
+			await transaction.get(eventDocRef);
+			await transaction.update(eventDocRef, {
+				[`attendees.${user.uid}`]: attendee,
+			});
+			await transaction.set(eventAttendeeDocRef, {
+				eventID: event.id,
+				userUID: user.uid,
+				eventDate: event.date,
+				isHost: false,
+			});
 		});
-		await firestore.set(`event_attendee/${event.id}_${user.uid}`, {
-			eventID: event.id,
-			userUID: user.uid,
-			eventDate: event.date,
-			isHost: false,
-		});
+
+		dispatch(asyncActionEnd());
 		toastr.success('Success', 'You have signed up for the event');
 	} catch (error) {
 		console.error(error);
 		toastr.error('Oops', 'Something went wrong');
+		dispatch(asyncActionError());
 	}
 };
 

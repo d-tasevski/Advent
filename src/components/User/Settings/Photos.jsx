@@ -159,6 +159,7 @@ class PhotosPage extends Component {
 								<Button
 									onClick={this.handleSetMainPhoto(p)}
 									disabled={isLoading}
+									loading={isLoading}
 									basic
 									color="green"
 								>

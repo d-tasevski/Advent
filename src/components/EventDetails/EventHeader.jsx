@@ -6,7 +6,7 @@ import format from 'date-fns/format';
 
 import styles from './EventHeader.module.css';
 
-const EventHeader = ({ event, isGoing, isHost, goingToEvent, cancelGoingToEvent }) => {
+const EventHeader = ({ event, isLoading, isGoing, isHost, goingToEvent, cancelGoingToEvent }) => {
 	const handleEventAttendance = () => {
 		if (!isGoing) return goingToEvent(event);
 
@@ -44,7 +44,11 @@ const EventHeader = ({ event, isGoing, isHost, goingToEvent, cancelGoingToEvent 
 			<Segment attached="bottom">
 				{!isHost ? (
 					<Fragment>
-						<Button onClick={handleEventAttendance} color={isGoing ? 'orange' : 'teal'}>
+						<Button
+							loading={isLoading}
+							onClick={handleEventAttendance}
+							color={isGoing ? 'orange' : 'teal'}
+						>
 							{isGoing ? 'Cancel My Place' : 'JOIN THIS EVENT'}
 						</Button>
 					</Fragment>
