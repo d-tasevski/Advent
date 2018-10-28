@@ -8,7 +8,7 @@ import 'semantic-ui-css/semantic.min.css';
 import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
 import './index.css';
 
-import App from './components/App';
+import AppWithLoadable from './components/AppWithLoadable';
 import * as serviceWorker from './serviceWorker';
 import configureStore from './store/store';
 import ScrollToTop from './helpers/ScrollToTop';
@@ -27,7 +27,7 @@ const Root = () => (
 					transitionIn="fadeIn"
 					transitionOut="fadeOut"
 				/>
-				<App />
+				<AppWithLoadable />
 			</ScrollToTop>
 		</BrowserRouter>
 	</Provider>
@@ -39,7 +39,7 @@ const render = () => {
 
 // Enable hot reloading
 if (module.hot) {
-	module.hot.accept('./components/App', () => {
+	module.hot.accept('./components/AppWithLoadable', () => {
 		setTimeout(render);
 	});
 }

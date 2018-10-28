@@ -2,7 +2,7 @@
 
 > Discover and organize exciting events
 
-Application about connecting people and organizing and discovering events. Built with React, Redux, and :fire: Firebase/Firestore
+Application about connecting people and organizing and discovering events. Built with React, Redux, and :fire: Firebase/Firestore, including the latest technologies like CSS modules, code splitting, offline caching and more.
 
 ## Getting Started
 
@@ -17,7 +17,7 @@ What things you need to install the software and how to install them
 
 ## Deployment
 
-TBD
+Deployed at [Firebase](https://advent-219819.firebaseapp.com). Take a look :)
 
 ## Built With
 
